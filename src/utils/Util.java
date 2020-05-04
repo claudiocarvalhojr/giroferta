@@ -1,0 +1,167 @@
+package utils;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+
+public final class Util {
+	
+	// PRINT LISTA NOME E VALOR
+	public void printNameValue(Map<String, String[]> parametros, boolean isPrint) {
+		printLinha(isPrint);
+		for (Map.Entry<String, String[]> e : parametros.entrySet())
+			System.out.printf("PARAMETRO: %-25s VALOR: %s %n", e.getKey(), e.getValue()[0]);
+		printLinha(isPrint);
+	}
+	
+	// PRINT VALOR
+	public void print(String valor, boolean isPrint) {
+		if (isPrint)
+			System.out.print(valor);
+	}
+		
+	// PRINT VALOR C/ NOVA LINHA
+	public void println(String valor, boolean isPrint) {
+		if (isPrint)
+			System.out.println(valor);
+	}
+		
+	// PRINT VALOR C/ NOVA LINHA
+	public void printDataHora(String valor, boolean isPrint) {
+		if (isPrint)
+			System.out.println((new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")).format(new Date()) + valor);
+	}
+		
+	// PRINT LINHA
+	public void printLinha(boolean isPrint) {
+		if (isPrint)
+			System.out.println("********************************************************************************");
+	}
+		
+	public Date converteDate(String data) {
+		Date date = null;
+		String MaskData = "dd/MM/yyyy";
+		String MaskHora = "HH:mm:ss";
+		try {
+			if (data.length() == 10)
+				date = new SimpleDateFormat(MaskData).parse(data);
+			else
+				date = new SimpleDateFormat(MaskData + " " + MaskHora).parse(data);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;									
+	}
+	
+	public String converDate(Calendar calendar, String mask) {
+		return (new SimpleDateFormat(mask)).format(calendar.getTime());
+	}
+	
+	public String converDate(Date date, String mask) {
+		return (new SimpleDateFormat(mask)).format(date);
+	}
+	
+	public String converCalendar(Calendar calendar) {
+		return (new SimpleDateFormat("yyyy-MM-dd")).format(calendar.getTime());
+	}
+	
+	public String converDate(Date date) {
+		return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")).format(date);
+	}
+	
+	public byte[] toBytes(InputStream stream) {
+		try {			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			IOUtils.copy(stream, baos);
+			return baos.toByteArray();			
+		}
+		catch (Exception e) {
+			return null;
+		}										
+	}
+
+	// CONFIGURA ESCALA IMAGEM ENVIADA (IMAGENS) ******************************
+	public BufferedImage redimensionar(BufferedImage original, int width, int height) {		
+		BufferedImage alterada = new BufferedImage(width, height, original.getType()); // original.getType() ou BufferedImage.TYPE_INT_RGB									
+		Graphics2D g2d = alterada.createGraphics();
+		g2d.drawImage(original.getScaledInstance(width, height, 10000), 0, 0, null);
+		g2d.dispose();		
+		return alterada;	   
+	}
+	
+	public boolean isDigit(String value) {
+		boolean isDigit = false;
+		for (int i = 0; i < value.length(); i++) {
+			isDigit = Character.isDigit(value.charAt(i)); 
+			if (!isDigit)
+				break;
+		}
+		return isDigit;
+	}
+	
+	public boolean isPassword(String password) {
+		if (password.length() < 8 || password.length() > 20)
+			return false;
+		Pattern p = Pattern.compile("([a-zA-Z]*([0-9]+[a-zA-Z]+)|([a-zA-Z]+[0-9]+)[0-9]*)+");
+		Matcher m = p.matcher(password);
+		return m.matches();
+	}  
+
+	public boolean isEmail(String email) {
+		Pattern p = Pattern.compile("^([0-9a-z]+([_.-]?[0-9a-z]+)*@[0-9a-z]+([_.-]?[0-9a-z]+)*(.){1}[a-z]{2,4})+$");
+		Matcher m = p.matcher(email);
+		return m.matches();
+	}  
+	
+	public String onlyNumbers(String valor) {
+		valor = valor.replace("(", "");
+		valor = valor.replace(")", "");
+		valor = valor.replace("[", "");
+		valor = valor.replace("]", "");
+		valor = valor.replace("{", "");
+		valor = valor.replace("}", "");
+		valor = valor.replace(".", "");
+		valor = valor.replace(",", "");
+		valor = valor.replace("+", "");
+		valor = valor.replace("-", "");
+		valor = valor.replace("*", "");
+		valor = valor.replace("=", "");
+		valor = valor.replace("/", "");
+		valor = valor.replace("\\", "");
+		valor = valor.replace("_", "");
+		valor = valor.replace(":", "");
+		valor = valor.replace(";", "");
+		valor = valor.replace("&", "");
+		valor = valor.replace("%", "");
+		valor = valor.replace("#", "");
+		valor = valor.replace("@", "");
+		valor = valor.replace("$", "");
+		valor = valor.replace("|", "");
+		valor = valor.replace("?", "");
+		valor = valor.replace("!", "");
+		valor = valor.replace("\"", "");
+		valor = valor.replace("'", "");
+		valor = valor.replace("ª", "");
+		valor = valor.replace("º", "");
+		valor = valor.replace("¹", "");
+		valor = valor.replace("²", "");
+		valor = valor.replace("³", "");
+		valor = valor.replace("¬", "");
+		valor = valor.replace("¢", "");
+		valor = valor.replace("£", "");
+		valor = valor.replace("§", "");
+		valor = valor.replace(" ", "");
+		return valor;
+	}
+	
+}

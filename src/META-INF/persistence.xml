@@ -1,0 +1,63 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="giroferta">
+
+		<!-- provedor/implementacao do JPA -->
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		
+		<!-- entidade mapeada -->
+		<class>entity.AdvertisementImages</class>
+		<class>entity.AdvertisementStores</class>
+		<class>entity.Advertisements</class>
+		<class>entity.Chat</class>
+		<class>entity.ChatMessages</class>
+		<class>entity.Cities</class>
+		<class>entity.Contacts</class>
+		<class>entity.Countries</class>
+		<class>entity.GoogleCategories</class>
+		<class>entity.HistorySearch</class>
+		<class>entity.NewsletterLists</class>
+		<class>entity.Orders</class>
+		<class>entity.States</class>
+		<class>entity.Stores</class>
+		<class>entity.StoreImages</class>
+		<class>entity.Users</class>
+		<class>entity.WarnMe</class>
+
+		<properties>
+		
+			<property name="connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />
+		
+			<!-- dados da conexao -->
+			<!-- 
+  			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql.giroferta.com/giroferta01" />
+			<property name="javax.persistence.jdbc.user" value="giroferta01" />
+			<property name="javax.persistence.jdbc.password" value="G1rOoOferta" /> 
+			-->
+
+			<!-- propriedades do hibernate -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.use_sql_comments" value="false" />
+			<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
+			
+			<!-- c3p0 - pool connections -->
+			<property name="hibernate.c3p0.acquire_increment" value="1" />
+			<property name="hibernate.c3p0.idle_test_period" value="450" />
+			<property name="hibernate.c3p0.max_size" value="35" />
+			<property name="hibernate.c3p0.max_statements" value="0" />
+			<property name="hibernate.c3p0.min_size" value="5" />
+			<property name="hibernate.c3p0.timeout" value="900" />
+			
+			<!-- atualiza o banco, e gera as tabelas se for preciso, value = update atualiza no banco -->
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+
+		</properties>
+	</persistence-unit>
+</persistence>
